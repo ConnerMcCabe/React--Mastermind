@@ -12,7 +12,7 @@ class App extends React.Component {
     super();
     this.state = {
       selColorIdx: 0,
-      guesses: [],
+      guesses: [this.getNewGuess(), this.getNewGuess()],
       code: this.genCode(),
     };
   };
@@ -20,6 +20,17 @@ class App extends React.Component {
 
 genCode() {
   return new Array(4).fill().map(() => Math.floor(Math.random() * colors.length));
+};
+getNewGuess() {
+  return {
+    //TODO: for dev/testing 
+    // code: [null, null, null, null],
+    code: [3, 2, 1, 0],
+    score: {
+      perfect: 0,
+      almost: 0,
+    }
+  }
 };
   render() {
     return (
@@ -33,14 +44,15 @@ genCode() {
         Select color: {this.state.selColorIdx}
         <header className="App-header">React Mastermind</header>
         <div className="flex-h">
-          <GameBoard />
+          <GameBoard colors={colors} guesses={this.state.guesses}
+          />
           <div>
-            <ColorPicker colors={colors}/>
+            <ColorPicker colors={colors} selColorIdx={this.state.selColorIdx}/>
             <GameTimer />
             <NewGameButton />
           </div>
         </div>
-        <footer>footer</footer>
+        <footer>{(winTries ? `You Won in ${winTries} Guesses!` : 'Good Luck!')}</footer>
       </div>
     );
   }
