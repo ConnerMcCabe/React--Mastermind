@@ -6,8 +6,18 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+.flex-h {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.align-flex-end {
+  align-items: flex-end;
+}
+button:focus, .btn:focus {
+  outline: none;
 }

@@ -1,10 +1,16 @@
 import React from 'react';
-import { tsPropertySignature } from '@babel/types';
+import styles from './ColorPicker.module.css'
 
 const ColorPicker = (props) => (
-    <div>
-     {props.colors.map(color =>
-        <button key={color}>{color}</button>
+    <div className={styles.ColorPicker}>
+     {props.colors.map((color, idx) =>
+        <button 
+          className={styles.button}
+          key={color} 
+          style={{
+            borderColor: color,
+            backgroundColor: props.selColorIdx === idx ? 'white' : color
+        }}/>
       )}
     </div>
   );

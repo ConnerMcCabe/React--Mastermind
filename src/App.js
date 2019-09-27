@@ -32,18 +32,18 @@ getNewGuess() {
     }
   }
 };
-  render() {
-    return (
-      <div className="App">
-        <button onClick={() => this.setState((state) => {
-          return { selColorIdx: ++state.selColorIdx % 4 };
-        })}>
-          Next Color
-        </button>
+getWinTries() {
+  let lastGuess = this.state.guesses.length - 1;
+  return this.state.guesses[lastGuess].score.perfect === 4 ? lastGuess + 1 : 0;
+}
 
-        Select color: {this.state.selColorIdx}
-        <header className="App-header">React Mastermind</header>
-        <div className="flex-h">
+  render() {
+    let winTries = this.getWinTries();
+      return (
+      <div className="App">
+        <header className="App-header-footer">React Mastermind</header>
+      
+        <div className="flex-h align-flex-end">
           <GameBoard colors={colors} guesses={this.state.guesses}
           />
           <div>
@@ -52,11 +52,17 @@ getNewGuess() {
             <NewGameButton />
           </div>
         </div>
-        <footer>{(winTries ? `You Won in ${winTries} Guesses!` : 'Good Luck!')}</footer>
+        <footer className='App-header-footer'>
+          {(winTries ? `You Won in ${winTries} Guesses!` : 'Good Luck!')}
+        </footer>
       </div>
     );
   }
 }
 
-
+{/* <button onClick={() => this.setState((state) => {
+          return { selColorIdx: ++state.selColorIdx % 4 };
+        })}>
+          Next Color
+        </button> */}
 export default App;
