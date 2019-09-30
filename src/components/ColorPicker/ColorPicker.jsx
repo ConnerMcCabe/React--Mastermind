@@ -10,7 +10,9 @@ const ColorPicker = (props) => (
           style={{
             borderColor: color,
             backgroundColor: props.selColorIdx === idx ? 'white' : color
-        }}/>
+        }}
+        onClick={() => props.handleColorSelection(idx)}
+        />
       )}
     </div>
   );

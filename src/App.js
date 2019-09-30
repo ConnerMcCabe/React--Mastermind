@@ -7,47 +7,72 @@ import NewGameButton from './components/NewGameButton/NewGameButton';
 
 const colors = ['#7CCCE5', '#FDE47F', '#E04644', '#B576AD'];
 
-class App extends React.Component {
+class App extends Component {
   constructor() {
     super();
-    this.state = {
-      selColorIdx: 0,
-      guesses: [this.getNewGuess(), this.getNewGuess()],
-      code: this.genCode(),
-    };
+    this.state = this.getInitialState();
   };
 
-
-genCode() {
-  return new Array(4).fill().map(() => Math.floor(Math.random() * colors.length));
-};
+getInitialState() {
+  return {
+    selColorIdx: 0,
+    guesses: [this.getNewGuess()],
+    code: this.genCode(),
+  };
+}
 getNewGuess() {
   return {
-    //TODO: for dev/testing 
-    // code: [null, null, null, null],
-    code: [3, 2, 1, 0],
+    code: [null, null, null, null],
     score: {
       perfect: 0,
       almost: 0,
     }
   }
 };
+genCode() {
+  return new Array(4).fill().map(() => Math.floor(Math.random() * colors.length));
+};
 getWinTries() {
   let lastGuess = this.state.guesses.length - 1;
   return this.state.guesses[lastGuess].score.perfect === 4 ? lastGuess + 1 : 0;
 }
+handleColorSelection = (colorIdx) => {
+  this.setState({selColorIdx: colorIdx});
+}
+handleNewGameClick = () => {
+  this.setState(this.getInitialState());
+}
+handlePegClick = (pegIdx) => {
+  let currentGuessIdx = this.state.guesses.length - 1;
+  let guessesCopy = [...this.state.guesses];
+  let guessCopy = {...guessCopy[currentGuessIdx]};
+  let codeCopy = this.state.selColorIdx;
+    codeCopy[pegIdx] = this.state.selColorIdx;
+    guessCopy.code = codeCopy;
+    guessesCopy[currentGuessIdx] = guessCopy;
+    this.setState({
+      guesses: guessesCopy
+    });
+}
+handleScoreClick
+//
+
 
   render() {
     let winTries = this.getWinTries();
       return (
       <div className="App">
-        <header className="App-header-footer">React Mastermind</header>
+        <header className="App-header-footer">R e a c t &nbsp;&nbsp;&nbsp;  M a s t e r m i n d</header>
       
         <div className="flex-h align-flex-end">
           <GameBoard colors={colors} guesses={this.state.guesses}
           />
           <div>
-            <ColorPicker colors={colors} selColorIdx={this.state.selColorIdx}/>
+            <ColorPicker 
+              colors={colors} 
+              selColorIdx={this.state.selColorIdx}
+              handleColorSelection={this.handleColorSelection}
+            />
             <GameTimer />
             <NewGameButton />
           </div>
@@ -60,9 +85,5 @@ getWinTries() {
   }
 }
 
-{/* <button onClick={() => this.setState((state) => {
-          return { selColorIdx: ++state.selColorIdx % 4 };
-        })}>
-          Next Color
-        </button> */}
+
 export default App;
