@@ -1,21 +1,28 @@
 .App {
+  display: flex;
+  justify-content: center;
   text-align: center;
   flex-direction: column;
-  height: 100%;
+  
 }
 
 .App-header-footer {
-  /* background-color: #222; */
+  background-color: rgb(225, 225, 225);
   height: 50px;
   padding: 10px;
   margin: 15px 0;
   color: grey;
   font-size: 18px;
   text-align: center;
+  height: 100%;
+  width: 100%;
 }
 .App-controls {
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
   margin-left: 20px;
+}
+.btn-default {
+  margin-bottom: 10px;
 }
