@@ -13,7 +13,7 @@ const colors = {
 class App extends Component {
   constructor() {
     super();
-    this.state = this.getInitialState();
+    this.state = {...this.getInitialState(), difficulty: 'Easy'};
   };
 
 getInitialState() {
@@ -21,6 +21,7 @@ getInitialState() {
     selColorIdx: 0,
     guesses: [this.getNewGuess()],
     code: this.genCode(),
+    elapsedTime: 0
   };
 };
 
@@ -35,7 +36,9 @@ getNewGuess() {
 };
 
 genCode() {
-  return new Array(4).fill().map(() => Math.floor(Math.random() * colors.length));
+  let numColors = this.state && colors[this.state.difficulty].length;
+  numColors = numColors || 4;
+  return new Array(4).fill().map(dummy => Math.floor(Math.random() * numColors));
 };
 
 getWinTries() {
@@ -58,8 +61,8 @@ handleNewGameClick = () => {
 handlePegClick = (pegIdx) => {
   let currentGuessIdx = this.state.guesses.length - 1;
   let guessesCopy = [...this.state.guesses];
-  let guessCopy = {...guessCopy[currentGuessIdx]};
-  let codeCopy = this.state.selColorIdx;
+  let guessCopy = {...guessesCopy[currentGuessIdx]};
+  let codeCopy = [...guessCopy.code];
     codeCopy[pegIdx] = this.state.selColorIdx;
     guessCopy.code = codeCopy;
     guessesCopy[currentGuessIdx] = guessCopy;
@@ -126,6 +129,9 @@ handleScoreClick = () => {
   });
 };
 
+handleTimerUpdate = () => {
+  this.setState((state) => ({elapsedTime: ++state.elapsedTime}));
+};
 render() {
   let winTries = this.getWinTries();
   return (
@@ -135,13 +141,15 @@ render() {
         <Route exact path='/' render={() =>
           <GamePage
             winTries={winTries}
-            colors={colors}
+            colors={colors[this.state.difficulty]}
             selColorIdx={this.state.selColorIdx}
             guesses={this.state.guesses}
+            elapsedTime={this.state.elapsedTime}
             handleColorSelection={this.handleColorSelection}
             handleNewGameClick={this.handleNewGameClick}
             handlePegClick={this.handlePegClick}
             handleScoreClick={this.handleScoreClick}
+            handleTimerUpdate={this.handleTimerUpdate}
           />
         } />
         <Route exact path='/settings' render={props => 
